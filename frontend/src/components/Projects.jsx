@@ -8,23 +8,39 @@ const projects = [
     description:
       "A full-stack developer portfolio built with React, Flask, and PostgreSQL.",
     technologies: ["React", "Flask", "PostgreSQL"],
+    links: {
+      frontend: "https://github.com/EvaArbo/fullstack-portfolio",
+      backend: null,
+      live: null,
+    },
   },
+
   {
     id: 2,
     title: "Ludo Game",
     description:
-      "A game project focused on application logic, player management, and database integration.",
-    technologies: ["Python", "SQLAlchemy", "PostgreSQL"],
+      "A full-stack game application focused on game logic, player management, and database integration.",
+    technologies: ["JavaScript", "Python", "PostgreSQL"],
+    links: {
+      frontend: "https://github.com/EvaArbo/LUDO-GAME",
+      backend: "https://github.com/EvaArbo/LUDO-GAME-BACKEND",
+      live: "https://ludo-game-ns8e.vercel.app/",
+    },
   },
+
   {
     id: 3,
     title: "SIMS - Smart Inventory Management System",
     description:
-      "A mobile inventory management application for tracking assets, managing users and permissions, handling requests, and scanning QR codes and barcodes.",
-    technologies: ["React Native", "Expo", "Expo Router"],
+      "A full-stack mobile inventory management system for tracking assets, managing users and permissions, handling requests, and scanning QR codes and barcodes.",
+    technologies: ["React Native", "Expo", "Expo Router", "JavaScript"],
+    links: {
+      frontend: null,
+      backend: null,
+      live: null,
+    },
   },
 ]
-
 function Projects() {
   return (
     <section id="projects" className="projects">
@@ -42,6 +58,7 @@ function Projects() {
                 title={project.title}
                 description={project.description}
                 technologies={project.technologies}
+                links={project.links}
               />
             )
           })}
