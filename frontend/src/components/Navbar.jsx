@@ -3,7 +3,7 @@ import "./Navbar.css"
 function Navbar() {
   return (
     <nav className="navbar">
-      <h2 className="navbar-logo">Arbogasti</h2>
+      <h2 className="navbar-logo">Arbogasti ♥</h2>
 
       <ul className="navbar-links">
         <li>
