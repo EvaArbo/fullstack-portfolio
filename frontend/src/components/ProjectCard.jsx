@@ -4,10 +4,19 @@ function ProjectCard({
   title,
   description,
   technologies,
+  image,
   links,
 }) {
   return (
     <div className="project-card">
+      <div className="project-image-container">
+        <img
+          src={image}
+          alt={`${title} project preview`}
+          className="project-image"
+        />
+      </div>
+
       <h3 className="project-card-title">{title}</h3>
 
       <p className="project-card-description">{description}</p>

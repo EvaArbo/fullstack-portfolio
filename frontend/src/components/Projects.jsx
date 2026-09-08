@@ -1,6 +1,10 @@
 import "./Projects.css"
 import ProjectCard from "./ProjectCard.jsx"
 
+import portfolioImage from "../assets/portfolio.png"
+import ludoImage from "../assets/ludo.png"
+import simsImage from "../assets/sims.png"
+
 const projects = [
   {
     id: 1,
@@ -8,6 +12,7 @@ const projects = [
     description:
       "A full-stack developer portfolio built with React, Flask, and PostgreSQL.",
     technologies: ["React", "Flask", "PostgreSQL"],
+    image: portfolioImage,
     links: {
       frontend: "https://github.com/EvaArbo/fullstack-portfolio",
       backend: null,
@@ -21,6 +26,7 @@ const projects = [
     description:
       "A full-stack game application focused on game logic, player management, and database integration.",
     technologies: ["JavaScript", "Python", "PostgreSQL"],
+    image: ludoImage,
     links: {
       frontend: "https://github.com/EvaArbo/LUDO-GAME",
       backend: "https://github.com/EvaArbo/LUDO-GAME-BACKEND",
@@ -34,6 +40,7 @@ const projects = [
     description:
       "A full-stack mobile inventory management system for tracking assets, managing users and permissions, handling requests, and scanning QR codes and barcodes.",
     technologies: ["React Native", "Expo", "Expo Router", "JavaScript"],
+    image: simsImage,
     links: {
       frontend: null,
       backend: null,
@@ -41,6 +48,7 @@ const projects = [
     },
   },
 ]
+
 function Projects() {
   return (
     <section id="projects" className="projects">
@@ -58,6 +66,7 @@ function Projects() {
                 title={project.title}
                 description={project.description}
                 technologies={project.technologies}
+                image={project.image}
                 links={project.links}
               />
             )
