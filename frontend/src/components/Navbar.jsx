@@ -1,25 +1,61 @@
+import { useState } from "react"
 import "./Navbar.css"
 
 function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  function toggleMenu() {
+    setIsMenuOpen((previousState) => !previousState)
+  }
+
+  function closeMenu() {
+    setIsMenuOpen(false)
+  }
+
   return (
     <nav className="navbar">
-      <h2 className="navbar-logo">Arbogasti ♥</h2>
+      <a
+        href="#home"
+        className="navbar-logo"
+        onClick={closeMenu}
+      >
+        Arbogasti ♥
+      </a>
 
-      <ul className="navbar-links">
+      <button
+        className={`menu-toggle ${isMenuOpen ? "open" : ""}`}
+        onClick={toggleMenu}
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMenuOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
         <li>
-          <a href="#home">Home</a>
+          <a href="#home" onClick={closeMenu}>
+            Home
+          </a>
         </li>
 
         <li>
-          <a href="#about">About</a>
+          <a href="#about" onClick={closeMenu}>
+            About
+          </a>
         </li>
 
         <li>
-          <a href="#projects">Projects</a>
+          <a href="#projects" onClick={closeMenu}>
+            Projects
+          </a>
         </li>
 
         <li>
-          <a href="#contact">Contact</a>
+          <a href="#contact" onClick={closeMenu}>
+            Contact
+          </a>
         </li>
       </ul>
     </nav>

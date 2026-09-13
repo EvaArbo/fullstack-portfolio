@@ -28,7 +28,7 @@ function Footer() {
         </div>
 
         <p className="footer-copy">
-          © 2026 Evaline Arbogasti. Built with React.
+          © 2026 Evaline Arbogasti. All rights reserved.
         </p>
       </div>
     </footer>

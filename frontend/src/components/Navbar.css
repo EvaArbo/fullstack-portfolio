@@ -13,15 +13,19 @@
 
   position: sticky;
   top: 0;
+
   z-index: 1000;
 
   backdrop-filter: blur(12px);
 }
 
 .navbar-logo {
-  font-size: 1.7rem;
   color: var(--primary);
+
+  font-size: 1.7rem;
   font-weight: 700;
+
+  text-decoration: none;
 }
 
 .navbar-links {
@@ -29,15 +33,16 @@
   align-items: center;
 
   list-style: none;
+
   gap: 2.5rem;
 }
 
 .navbar-links a {
   position: relative;
 
-  text-decoration: none;
-
   color: var(--text-primary);
+
+  text-decoration: none;
 
   font-size: 0.95rem;
   font-weight: 500;
@@ -69,12 +74,125 @@
   width: 100%;
 }
 
+
+/* Hamburger button */
+
+.menu-toggle {
+  display: none;
+
+  width: 32px;
+  height: 24px;
+
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-toggle span {
+  width: 100%;
+  height: 3px;
+
+  background-color: var(--primary);
+
+  border-radius: 999px;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+
+/* Turn hamburger into X */
+
+.menu-toggle.open span:nth-child(1) {
+  transform: translateY(10.5px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  transform: translateY(-10.5px) rotate(-45deg);
+}
+
+
+/* Mobile */
+
 @media (max-width: 768px) {
   .navbar {
     padding: 0 1.5rem;
   }
 
+  .menu-toggle {
+    display: flex;
+  }
+
   .navbar-links {
-    gap: 1rem;
+    position: absolute;
+
+    top: 80px;
+    left: 0;
+
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 0;
+
+    padding: 1rem 0 1.5rem;
+
+    background-color: rgba(255, 248, 247, 0.97);
+
+    border-bottom: 1px solid var(--border);
+
+    backdrop-filter: blur(12px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform: translateY(-12px);
+
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .navbar-links.open {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+
+  .navbar-links li {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .navbar-links a {
+    display: block;
+
+    width: 100%;
+
+    padding: 1rem;
+  }
+
+  .navbar-links a::after {
+    display: none;
   }
 }

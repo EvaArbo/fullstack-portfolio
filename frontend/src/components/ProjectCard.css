@@ -2,9 +2,12 @@
   display: flex;
   flex-direction: column;
 
+  height: 100%;
   min-height: 420px;
 
   padding: 2rem;
+
+  position: relative;
 
   background-color: var(--surface);
 
@@ -13,19 +16,30 @@
 
   box-shadow: var(--shadow-small);
 
+  transform:
+    translateX(var(--card-float-x, 0px))
+    translateY(var(--card-float-y, 0px))
+    rotateX(var(--card-rotate-x, 0deg))
+    rotateY(var(--card-rotate-y, 0deg));
+
+  transform-style: preserve-3d;
+
+  will-change: transform;
+
   transition:
-    transform 0.3s ease,
     box-shadow 0.3s ease,
     border-color 0.3s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
+  border-color: rgba(139, 47, 104, 0.4);
 
-  border-color: rgba(139, 47, 104, 0.35);
-
-  box-shadow: var(--shadow-medium);
+  box-shadow:
+    0 30px 60px rgba(36, 22, 46, 0.18);
 }
+
+
+/* IMAGE */
 
 .project-image-container {
   width: 100%;
@@ -35,9 +49,11 @@
 
   overflow: hidden;
 
+  background-color: var(--soft-pink);
+
   border-radius: 14px;
 
-  background-color: var(--soft-pink);
+  transform: translateZ(45px);
 }
 
 .project-image {
@@ -46,12 +62,16 @@
 
   object-fit: contain;
 
-  transition: transform 0.4s ease;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-card:hover .project-image {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
+
+
+/* TITLE */
 
 .project-card-title {
   margin-bottom: 1rem;
@@ -60,7 +80,12 @@
 
   font-size: 1.6rem;
   line-height: 1.3;
+
+  transform: translateZ(34px);
 }
+
+
+/* DESCRIPTION */
 
 .project-card-description {
   margin-bottom: 1.8rem;
@@ -68,13 +93,20 @@
   color: var(--text-secondary);
 
   line-height: 1.8;
+
+  transform: translateZ(18px);
 }
+
+
+/* TECH */
 
 .project-technologies {
   display: flex;
   flex-wrap: wrap;
 
   gap: 0.6rem;
+
+  transform: translateZ(28px);
 }
 
 .project-tech {
@@ -89,7 +121,22 @@
 
   font-size: 0.82rem;
   font-weight: 600;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease;
 }
+
+.project-tech:hover {
+  transform:
+    translateZ(12px)
+    translateY(-3px);
+
+  background-color: var(--soft-purple);
+}
+
+
+/* LINKS */
 
 .project-links {
   display: flex;
@@ -99,6 +146,8 @@
 
   margin-top: auto;
   padding-top: 2rem;
+
+  transform: translateZ(32px);
 }
 
 .project-links a {
@@ -117,7 +166,8 @@
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
-    transform 0.3s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .project-links a:hover {
@@ -125,5 +175,26 @@
 
   color: white;
 
-  transform: translateY(-2px);
+  transform:
+    translateZ(12px)
+    translateY(-3px);
+
+  box-shadow: var(--shadow-small);
+}
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transform: none;
+  }
+
+  .project-image-container,
+  .project-card-title,
+  .project-card-description,
+  .project-technologies,
+  .project-links {
+    transform: none;
+  }
 }

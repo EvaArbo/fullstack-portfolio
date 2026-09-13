@@ -1,5 +1,6 @@
 import "./Projects.css"
 import ProjectCard from "./ProjectCard.jsx"
+import Reveal from "./Reveal.jsx"
 
 import portfolioImage from "../assets/portfolio.png"
 import ludoImage from "../assets/ludo.png"
@@ -53,22 +54,35 @@ function Projects() {
   return (
     <section id="projects" className="projects">
       <div className="projects-content">
-        <div className="projects-header">
-          <p className="projects-label">Selected work</p>
-          <h2 className="projects-title">Projects</h2>
-        </div>
+        <Reveal
+          direction="zoom"
+          distance={40}
+          duration={1000}
+        >
+          <div className="projects-header">
+            <p className="projects-label">Selected work</p>
+            <h2 className="projects-title">Projects</h2>
+          </div>
+        </Reveal>
 
         <div className="projects-grid">
-          {projects.map((project) => {
+          {projects.map((project, index) => {
             return (
-              <ProjectCard
+              <Reveal
                 key={project.id}
-                title={project.title}
-                description={project.description}
-                technologies={project.technologies}
-                image={project.image}
-                links={project.links}
-              />
+                direction="up"
+                delay={index * 160}
+                distance={90}
+                duration={1000}
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  technologies={project.technologies}
+                  image={project.image}
+                  links={project.links}
+                />
+              </Reveal>
             )
           })}
         </div>
