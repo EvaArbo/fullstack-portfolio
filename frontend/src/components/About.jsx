@@ -1,22 +1,190 @@
+import { useEffect, useRef } from "react"
 import "./About.css"
 import Reveal from "./Reveal.jsx"
 
+
+function LiveAboutCard({
+  title,
+  description,
+  index,
+}) {
+  const cardRef = useRef(null)
+
+  const pointerRef = useRef({
+    x: 0,
+    y: 0,
+  })
+
+
+  useEffect(() => {
+    const card = cardRef.current
+
+    if (!card) {
+      return
+    }
+
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
+
+    if (prefersReducedMotion) {
+      return
+    }
+
+
+    function handlePointerMove(event) {
+      const x =
+        (event.clientX / window.innerWidth - 0.5) * 2
+
+      const y =
+        (event.clientY / window.innerHeight - 0.5) * 2
+
+
+      pointerRef.current = {
+        x,
+        y,
+      }
+    }
+
+
+    window.addEventListener(
+      "pointermove",
+      handlePointerMove,
+    )
+
+
+    let animationFrame
+
+
+    function animate(time) {
+      const seconds = time / 1000
+
+      const phase = index * 1.6
+
+
+      /*
+        Very small automatic movement.
+
+        These values are intentionally much
+        smaller than the ProjectCard values.
+      */
+
+      const floatY =
+        Math.sin(seconds * 0.8 + phase) * 4
+
+      const floatX =
+        Math.cos(seconds * 0.65 + phase) * 2
+
+
+      const ambientRotateX =
+        Math.sin(seconds * 0.55 + phase) * 1.2
+
+      const ambientRotateY =
+        Math.cos(seconds * 0.6 + phase) * 1.5
+
+
+      /*
+        Pointer response.
+
+        Also intentionally subtle.
+      */
+
+      const pointerRotateX =
+        pointerRef.current.y * -1.5
+
+      const pointerRotateY =
+        pointerRef.current.x * 2
+
+
+      const rotateX =
+        ambientRotateX + pointerRotateX
+
+      const rotateY =
+        ambientRotateY + pointerRotateY
+
+
+      card.style.setProperty(
+        "--about-float-x",
+        `${floatX}px`,
+      )
+
+      card.style.setProperty(
+        "--about-float-y",
+        `${floatY}px`,
+      )
+
+      card.style.setProperty(
+        "--about-rotate-x",
+        `${rotateX}deg`,
+      )
+
+      card.style.setProperty(
+        "--about-rotate-y",
+        `${rotateY}deg`,
+      )
+
+
+      animationFrame =
+        requestAnimationFrame(animate)
+    }
+
+
+    animationFrame =
+      requestAnimationFrame(animate)
+
+
+    return () => {
+      window.removeEventListener(
+        "pointermove",
+        handlePointerMove,
+      )
+
+      cancelAnimationFrame(animationFrame)
+    }
+  }, [index])
+
+
+  return (
+    <div
+      ref={cardRef}
+      className="about-card"
+    >
+      <h3>{title}</h3>
+
+      <p>{description}</p>
+    </div>
+  )
+}
+
+
 function About() {
   return (
-    <section id="about" className="about">
+    <section
+      id="about"
+      className="about"
+    >
       <div className="about-content">
+
         <Reveal
           direction="zoom"
           distance={40}
           duration={1000}
         >
           <div className="about-header">
-            <p className="about-label">Get to know me</p>
-            <h2 className="about-title">About Me</h2>
+            <p className="about-label">
+              Get to know me
+            </p>
+
+            <h2 className="about-title">
+              About Me
+            </h2>
           </div>
         </Reveal>
 
+
         <div className="about-grid">
+
           <Reveal
             direction="left"
             distance={90}
@@ -40,47 +208,62 @@ function About() {
             </div>
           </Reveal>
 
+
           <div className="about-highlights">
-            <Reveal direction="right" delay={0}>
-              <div className="about-card">
-                <h3>Web Development</h3>
-                <p>
-                  Building responsive interfaces with React and JavaScript.
-                </p>
-              </div>
+
+            <Reveal
+              direction="right"
+              delay={0}
+            >
+              <LiveAboutCard
+                title="Web Development"
+                description="Building responsive interfaces with React and JavaScript."
+                index={0}
+              />
             </Reveal>
 
-            <Reveal direction="right" delay={120}>
-              <div className="about-card">
-                <h3>Mobile Development</h3>
-                <p>
-                  Creating mobile applications with React Native.
-                </p>
-              </div>
+
+            <Reveal
+              direction="right"
+              delay={120}
+            >
+              <LiveAboutCard
+                title="Mobile Development"
+                description="Creating mobile applications with React Native."
+                index={1}
+              />
             </Reveal>
 
-            <Reveal direction="right" delay={240}>
-              <div className="about-card">
-                <h3>Backend Development</h3>
-                <p>
-                  Building APIs and server-side applications with Python and Flask.
-                </p>
-              </div>
+
+            <Reveal
+              direction="right"
+              delay={240}
+            >
+              <LiveAboutCard
+                title="Backend Development"
+                description="Building APIs and server-side applications with Python and Flask."
+                index={2}
+              />
             </Reveal>
 
-            <Reveal direction="right" delay={360}>
-              <div className="about-card">
-                <h3>Always Learning</h3>
-                <p>
-                  Strengthening my skills by building and understanding real projects.
-                </p>
-              </div>
+
+            <Reveal
+              direction="right"
+              delay={360}
+            >
+              <LiveAboutCard
+                title="Always Learning"
+                description="Strengthening my skills by building and understanding real projects."
+                index={3}
+              />
             </Reveal>
+
           </div>
         </div>
       </div>
     </section>
   )
 }
+
 
 export default About
