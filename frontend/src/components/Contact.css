@@ -1,6 +1,10 @@
 .contact {
   padding: 7rem 2rem;
 
+  position: relative;
+
+  overflow: hidden;
+
   background:
     radial-gradient(
       circle at 85% 20%,
@@ -10,17 +14,36 @@
     var(--soft-pink);
 }
 
+
+/* MAIN LAYOUT */
+
 .contact-content {
   max-width: 1100px;
+
   margin: 0 auto;
 
   display: grid;
+
   grid-template-columns: 1fr 1.1fr;
 
   gap: 5rem;
 
   align-items: center;
 }
+
+
+/*
+  Reveal adds a wrapper around both
+  columns. This lets each wrapper fill
+  its side of the grid properly.
+*/
+
+.contact-content > .reveal {
+  width: 100%;
+}
+
+
+/* LEFT SIDE */
 
 .contact-info {
   max-width: 480px;
@@ -35,6 +58,7 @@
   font-weight: 700;
 
   text-transform: uppercase;
+
   letter-spacing: 0.18rem;
 }
 
@@ -43,7 +67,9 @@
 
   color: var(--text-primary);
 
-  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-size:
+    clamp(2.8rem, 5vw, 4rem);
+
   line-height: 1.1;
 }
 
@@ -53,20 +79,47 @@
   color: var(--text-secondary);
 
   font-size: 1.1rem;
+
   line-height: 1.8;
 }
+
+
+/* PRIVACY NOTE */
 
 .contact-note {
   padding: 1.5rem;
 
-  background-color: rgba(255, 255, 255, 0.65);
+  position: relative;
 
-  border: 1px solid var(--border);
+  background-color:
+    rgba(255, 255, 255, 0.65);
+
+  border:
+    1px solid var(--border);
+
   border-radius: 14px;
 
   color: var(--text-secondary);
 
   line-height: 1.7;
+
+  box-shadow:
+    var(--shadow-small);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.contact-note:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(139, 47, 104, 0.25);
+
+  box-shadow:
+    var(--shadow-medium);
 }
 
 .contact-note-title {
@@ -77,16 +130,52 @@
   font-weight: 700;
 }
 
+
+/* FORM CARD */
+
 .contact-form-container {
   padding: 2.5rem;
 
-  background-color: rgba(255, 255, 255, 0.85);
+  position: relative;
 
-  border: 1px solid var(--border);
+  background-color:
+    rgba(255, 255, 255, 0.85);
+
+  border:
+    1px solid var(--border);
+
   border-radius: 20px;
 
-  box-shadow: var(--shadow-medium);
+  box-shadow:
+    var(--shadow-medium);
+
+  transition:
+    transform 0.4s
+      cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
 }
+
+
+/*
+  :focus-within becomes active whenever
+  any input or textarea INSIDE the card
+  currently has focus.
+*/
+
+.contact-form-container:focus-within {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(139, 47, 104, 0.32);
+
+  box-shadow:
+    0 26px 60px
+    rgba(36, 22, 46, 0.14);
+}
+
+
+/* FORM */
 
 .contact-form {
   display: flex;
@@ -94,6 +183,9 @@
 
   gap: 1.5rem;
 }
+
+
+/* FORM GROUP */
 
 .form-group {
   display: flex;
@@ -106,7 +198,26 @@
   color: var(--text-primary);
 
   font-weight: 600;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
 }
+
+
+/*
+  When an input inside this group
+  receives focus, the label reacts too.
+*/
+
+.form-group:focus-within label {
+  color: var(--primary);
+
+  transform: translateX(4px);
+}
+
+
+/* INPUTS */
 
 .form-group input,
 .form-group textarea {
@@ -115,23 +226,32 @@
   padding: 0.95rem 1rem;
 
   background-color: var(--surface);
+
   color: var(--text-primary);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
+
   border-radius: 10px;
 
   font: inherit;
 
   transition:
     border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: var(--text-secondary);
+
   opacity: 0.65;
 }
+
+
+/* ACTIVE FIELD */
 
 .form-group input:focus,
 .form-group textarea:focus {
@@ -139,9 +259,27 @@
 
   border-color: var(--primary);
 
+  background-color:
+    rgba(255, 255, 255, 0.98);
+
   box-shadow:
-    0 0 0 3px rgba(139, 47, 104, 0.12);
+    0 0 0 4px
+    rgba(139, 47, 104, 0.1);
+
+  transform: translateY(-2px);
 }
+
+
+/* VALID FIELD */
+
+.form-group input:not(:placeholder-shown):valid,
+.form-group textarea:not(:placeholder-shown):valid {
+  border-color:
+    rgba(139, 47, 104, 0.45);
+}
+
+
+/* MESSAGE */
 
 .form-group textarea {
   min-height: 170px;
@@ -149,15 +287,31 @@
   resize: vertical;
 }
 
+
+/* BUTTON */
+
 .contact-button {
   align-self: flex-start;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.7rem;
+
   padding: 0.9rem 1.7rem;
 
+  position: relative;
+
+  overflow: hidden;
+
   background-color: var(--primary);
+
   color: white;
 
-  border: 2px solid var(--primary);
+  border:
+    2px solid var(--primary);
+
   border-radius: 10px;
 
   font: inherit;
@@ -165,7 +319,8 @@
 
   cursor: pointer;
 
-  box-shadow: var(--shadow-small);
+  box-shadow:
+    var(--shadow-small);
 
   transition:
     background-color 0.3s ease,
@@ -174,23 +329,124 @@
     box-shadow 0.3s ease;
 }
 
-.contact-button:hover {
-  background-color: var(--primary-dark);
-  border-color: var(--primary-dark);
 
-  transform: translateY(-3px);
+/* BUTTON SHINE */
 
-  box-shadow: var(--shadow-medium);
+.contact-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -130%;
+
+  width: 80%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+
+  transform:
+    skewX(-20deg);
+
+  transition:
+    left 0.55s ease;
 }
+
+.contact-button:hover::before {
+  left: 150%;
+}
+
+.contact-button:hover {
+  background-color:
+    var(--primary-dark);
+
+  border-color:
+    var(--primary-dark);
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    var(--shadow-medium);
+}
+
+.contact-button:active {
+  transform:
+    translateY(-1px)
+    scale(0.98);
+}
+
+
+/* BUTTON ARROW */
+
+.contact-button-arrow {
+  display: inline-block;
+
+  transition:
+    transform 0.3s
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-button:hover
+.contact-button-arrow {
+  transform:
+    translateX(5px);
+}
+
+
+/* STATUS */
 
 .contact-status {
   margin-top: 1.5rem;
 
+  padding: 0.9rem 1rem;
+
   color: var(--primary);
 
+  background-color:
+    var(--soft-pink);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 10px;
+
   text-align: center;
+
   font-weight: 600;
+
+  animation:
+    contact-status-enter
+    0.5s
+    cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+@keyframes contact-status-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* TABLET */
 
 @media (max-width: 850px) {
   .contact-content {
@@ -208,9 +464,13 @@
   }
 }
 
+
+/* PHONE */
+
 @media (max-width: 600px) {
   .contact {
-    padding: 5rem 1.5rem;
+    padding:
+      5rem 1.5rem;
   }
 
   .contact-form-container {
@@ -219,5 +479,37 @@
 
   .contact-button {
     width: 100%;
+  }
+}
+
+
+/* ACCESSIBILITY */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+  .contact-note,
+  .contact-form-container,
+  .form-group label,
+  .form-group input,
+  .form-group textarea,
+  .contact-button,
+  .contact-button::before,
+  .contact-button-arrow,
+  .contact-status {
+    transition: none;
+
+    animation: none;
+  }
+
+  .contact-note:hover,
+  .contact-form-container:focus-within,
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .contact-button:hover,
+  .contact-button:active,
+  .contact-button:hover
+  .contact-button-arrow {
+    transform: none;
   }
 }

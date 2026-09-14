@@ -18,6 +18,10 @@ function Contact() {
       ...formData,
       [name]: value,
     })
+
+    if (status) {
+      setStatus("")
+    }
   }
 
   function handleSubmit(event) {
@@ -25,13 +29,9 @@ function Contact() {
 
     console.log(formData)
 
-    setStatus("Message ready to send!")
-
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    })
+    setStatus(
+      "Form validated ✓ Sending will be connected when the Flask backend is added.",
+    )
   }
 
   return (
@@ -58,12 +58,13 @@ function Contact() {
 
             <div className="contact-note">
               <p className="contact-note-title">
-                How it works
+                Private by design
               </p>
 
               <p>
-                Your message will be sent through this form while my receiving
-                contact information stays private.
+                This form is designed to send messages through the backend,
+                so my receiving contact information does not need to be
+                displayed publicly.
               </p>
             </div>
           </div>
@@ -120,7 +121,7 @@ function Contact() {
                 <textarea
                   id="message"
                   name="message"
-                  placeholder="Your message"
+                  placeholder="Tell me about your project, opportunity, or idea..."
                   value={formData.message}
                   onChange={handleChange}
                   required
@@ -131,12 +132,24 @@ function Contact() {
                 className="contact-button"
                 type="submit"
               >
-                Send Message
+                <span>
+                  Send Message
+                </span>
+
+                <span
+                  className="contact-button-arrow"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
               </button>
             </form>
 
             {status && (
-              <p className="contact-status">
+              <p
+                className="contact-status"
+                role="status"
+              >
                 {status}
               </p>
             )}
