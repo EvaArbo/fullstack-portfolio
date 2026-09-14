@@ -33,9 +33,10 @@
 
 
 /*
-  Reveal adds a wrapper around both
-  columns. This lets each wrapper fill
-  its side of the grid properly.
+  Reveal adds a wrapper around both columns.
+
+  This makes each Reveal wrapper fill
+  its side of the grid correctly.
 */
 
 .contact-content > .reveal {
@@ -113,7 +114,8 @@
 }
 
 .contact-note:hover {
-  transform: translateY(-4px);
+  transform:
+    translateY(-4px);
 
   border-color:
     rgba(139, 47, 104, 0.25);
@@ -158,13 +160,13 @@
 
 
 /*
-  :focus-within becomes active whenever
-  any input or textarea INSIDE the card
-  currently has focus.
+  The whole form card reacts when
+  any input or textarea receives focus.
 */
 
 .contact-form-container:focus-within {
-  transform: translateY(-5px);
+  transform:
+    translateY(-5px);
 
   border-color:
     rgba(139, 47, 104, 0.32);
@@ -179,6 +181,7 @@
 
 .contact-form {
   display: flex;
+
   flex-direction: column;
 
   gap: 1.5rem;
@@ -189,6 +192,7 @@
 
 .form-group {
   display: flex;
+
   flex-direction: column;
 
   gap: 0.6rem;
@@ -206,14 +210,15 @@
 
 
 /*
-  When an input inside this group
-  receives focus, the label reacts too.
+  Label responds when its input
+  or textarea is currently focused.
 */
 
 .form-group:focus-within label {
   color: var(--primary);
 
-  transform: translateX(4px);
+  transform:
+    translateX(4px);
 }
 
 
@@ -225,9 +230,11 @@
 
   padding: 0.95rem 1rem;
 
-  background-color: var(--surface);
+  background-color:
+    var(--surface);
 
-  color: var(--text-primary);
+  color:
+    var(--text-primary);
 
   border:
     1px solid var(--border);
@@ -245,7 +252,8 @@
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   opacity: 0.65;
 }
@@ -257,7 +265,8 @@
 .form-group textarea:focus {
   outline: none;
 
-  border-color: var(--primary);
+  border-color:
+    var(--primary);
 
   background-color:
     rgba(255, 255, 255, 0.98);
@@ -266,7 +275,8 @@
     0 0 0 4px
     rgba(139, 47, 104, 0.1);
 
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 }
 
 
@@ -294,10 +304,11 @@
   align-self: flex-start;
 
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
-  gap: 0.7rem;
+  min-width: 150px;
 
   padding: 0.9rem 1.7rem;
 
@@ -305,7 +316,8 @@
 
   overflow: hidden;
 
-  background-color: var(--primary);
+  background-color:
+    var(--primary);
 
   color: white;
 
@@ -326,7 +338,8 @@
     background-color 0.3s ease,
     border-color 0.3s ease,
     transform 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    opacity 0.3s ease;
 }
 
 
@@ -383,31 +396,52 @@
 }
 
 
-/* BUTTON ARROW */
+/* SENDING / DISABLED BUTTON */
 
-.contact-button-arrow {
-  display: inline-block;
+.contact-button:disabled {
+  opacity: 0.7;
 
-  transition:
-    transform 0.3s
-    cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: not-allowed;
+
+  background-color:
+    var(--primary);
+
+  border-color:
+    var(--primary);
+
+  transform: none;
+
+  box-shadow:
+    var(--shadow-small);
 }
 
-.contact-button:hover
-.contact-button-arrow {
-  transform:
-    translateX(5px);
+.contact-button:disabled:hover {
+  background-color:
+    var(--primary);
+
+  border-color:
+    var(--primary);
+
+  transform: none;
+
+  box-shadow:
+    var(--shadow-small);
+}
+
+.contact-button:disabled::before {
+  display: none;
 }
 
 
-/* STATUS */
+/* STATUS MESSAGE */
 
 .contact-status {
   margin-top: 1.5rem;
 
   padding: 0.9rem 1rem;
 
-  color: var(--primary);
+  color:
+    var(--primary);
 
   background-color:
     var(--soft-pink);
@@ -485,9 +519,7 @@
 
 /* ACCESSIBILITY */
 
-@media (
-  prefers-reduced-motion: reduce
-) {
+@media (prefers-reduced-motion: reduce) {
   .contact-note,
   .contact-form-container,
   .form-group label,
@@ -495,7 +527,6 @@
   .form-group textarea,
   .contact-button,
   .contact-button::before,
-  .contact-button-arrow,
   .contact-status {
     transition: none;
 
@@ -507,9 +538,7 @@
   .form-group input:focus,
   .form-group textarea:focus,
   .contact-button:hover,
-  .contact-button:active,
-  .contact-button:hover
-  .contact-button-arrow {
+  .contact-button:active {
     transform: none;
   }
 }
