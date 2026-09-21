@@ -11,9 +11,6 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 
-# -------------------------
-# ENVIRONMENT VARIABLES
-# -------------------------
 
 load_dotenv()
 
@@ -40,10 +37,6 @@ resend_from_email = os.getenv(
 )
 
 
-# -------------------------
-# REQUIRED ENVIRONMENT CHECKS
-# -------------------------
-
 if not database_url:
     raise RuntimeError(
         "DATABASE_URL was not found. "
@@ -65,28 +58,12 @@ if not contact_receiver_email:
     )
 
 
-# -------------------------
-# RESEND CONFIGURATION
-# -------------------------
-
 resend.api_key = resend_api_key
-
-
-# -------------------------
-# FLASK APP
-# -------------------------
 
 app = Flask(__name__)
 
-
-# Limit incoming request bodies.
-# Contact messages do not need huge payloads.
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 
-
-# -------------------------
-# DATABASE CONFIGURATION
-# -------------------------
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
@@ -101,10 +78,6 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-
-# -------------------------
-# CORS
-# -------------------------
 
 allowed_origins = [
     "http://localhost:5173",
@@ -123,9 +96,6 @@ CORS(
 )
 
 
-# -------------------------
-# DATABASE MODEL
-# -------------------------
 
 class ContactMessage(db.Model):
     __tablename__ = "contact_messages"
@@ -157,9 +127,6 @@ class ContactMessage(db.Model):
     )
 
 
-# -------------------------
-# HEALTH CHECK
-# -------------------------
 
 @app.get("/api/health")
 def health():
@@ -169,9 +136,6 @@ def health():
     }), 200
 
 
-# -------------------------
-# CONTACT ROUTE
-# -------------------------
 
 @app.post("/api/contact")
 def contact():
@@ -211,9 +175,7 @@ def contact():
     ).strip()
 
 
-    # -------------------------
-    # REQUIRED FIELD VALIDATION
-    # -------------------------
+   
 
     if not name:
         return jsonify({
@@ -236,9 +198,7 @@ def contact():
         }), 400
 
 
-    # -------------------------
-    # LENGTH VALIDATION
-    # -------------------------
+   
 
     if len(name) > 120:
         return jsonify({
@@ -261,9 +221,6 @@ def contact():
         }), 400
 
 
-    # -------------------------
-    # EMAIL VALIDATION
-    # -------------------------
 
     try:
         validated_email = validate_email(
@@ -280,10 +237,7 @@ def contact():
         }), 400
 
 
-    # -------------------------
-    # CREATE DATABASE RECORD
-    # -------------------------
-
+   
     new_message = ContactMessage(
         name=name,
         email=email,
@@ -315,10 +269,7 @@ def contact():
         }), 500
 
 
-    # -------------------------
-    # PREPARE SAFE EMAIL CONTENT
-    # -------------------------
-
+   
     safe_name = escape(
         name
     )
@@ -335,9 +286,7 @@ def contact():
     )
 
 
-    # -------------------------
-    # EMAIL NOTIFICATION
-    # -------------------------
+    
 
     try:
         resend.Emails.send({
@@ -375,8 +324,6 @@ def contact():
         })
 
     except Exception as error:
-        # The database already has the message,
-        # so email failure should not delete it.
         app.logger.exception(
             "Contact message saved, "
             "but email notification failed: %s",
@@ -384,9 +331,6 @@ def contact():
         )
 
 
-    # -------------------------
-    # SUCCESS RESPONSE
-    # -------------------------
 
     return jsonify({
         "status": "success",
@@ -394,9 +338,7 @@ def contact():
     }), 201
 
 
-# -------------------------
-# RUN APPLICATION
-# -------------------------
+
 
 if __name__ == "__main__":
     app.run(
