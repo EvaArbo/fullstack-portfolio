@@ -1,11 +1,14 @@
 import os
+from html import escape
+
+import resend
 
 from dotenv import load_dotenv
+from email_validator import EmailNotValidError, validate_email
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from sqlalchemy import text
+from flask_sqlalchemy import SQLAlchemy
 
 
 # -------------------------
@@ -15,6 +18,60 @@ from sqlalchemy import text
 load_dotenv()
 
 
+database_url = os.getenv(
+    "DATABASE_URL"
+)
+
+resend_api_key = os.getenv(
+    "RESEND_API_KEY"
+)
+
+contact_receiver_email = os.getenv(
+    "CONTACT_RECEIVER_EMAIL"
+)
+
+frontend_url = os.getenv(
+    "FRONTEND_URL"
+)
+
+resend_from_email = os.getenv(
+    "RESEND_FROM_EMAIL",
+    "Portfolio <onboarding@resend.dev>",
+)
+
+
+# -------------------------
+# REQUIRED ENVIRONMENT CHECKS
+# -------------------------
+
+if not database_url:
+    raise RuntimeError(
+        "DATABASE_URL was not found. "
+        "Check your backend/.env file."
+    )
+
+
+if not resend_api_key:
+    raise RuntimeError(
+        "RESEND_API_KEY was not found. "
+        "Check your backend/.env file."
+    )
+
+
+if not contact_receiver_email:
+    raise RuntimeError(
+        "CONTACT_RECEIVER_EMAIL was not found. "
+        "Check your backend/.env file."
+    )
+
+
+# -------------------------
+# RESEND CONFIGURATION
+# -------------------------
+
+resend.api_key = resend_api_key
+
+
 # -------------------------
 # FLASK APP
 # -------------------------
@@ -22,12 +79,9 @@ load_dotenv()
 app = Flask(__name__)
 
 
-database_url = os.getenv("DATABASE_URL")
-
-if not database_url:
-    raise RuntimeError(
-        "DATABASE_URL was not found. Check your backend/.env file."
-    )
+# Limit incoming request bodies.
+# Contact messages do not need huge payloads.
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 
 
 # -------------------------
@@ -37,6 +91,10 @@ if not database_url:
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_pre_ping": True,
+}
 
 
 db = SQLAlchemy(app)
@@ -48,11 +106,20 @@ migrate = Migrate(app, db)
 # CORS
 # -------------------------
 
+allowed_origins = [
+    "http://localhost:5173",
+]
+
+
+if frontend_url:
+    allowed_origins.append(
+        frontend_url.rstrip("/")
+    )
+
+
 CORS(
     app,
-    origins=[
-        "http://localhost:5173",
-    ],
+    origins=allowed_origins,
 )
 
 
@@ -91,7 +158,7 @@ class ContactMessage(db.Model):
 
 
 # -------------------------
-# FLASK HEALTH CHECK
+# HEALTH CHECK
 # -------------------------
 
 @app.get("/api/health")
@@ -99,33 +166,7 @@ def health():
     return jsonify({
         "status": "ok",
         "message": "Flask backend is running",
-    })
-
-
-# -------------------------
-# DATABASE HEALTH CHECK
-# -------------------------
-
-@app.get("/api/db-health")
-def db_health():
-    try:
-        db.session.execute(
-            text("SELECT 1")
-        )
-
-        return jsonify({
-            "status": "ok",
-            "message": "PostgreSQL connection is working",
-        }), 200
-
-    except Exception as error:
-        print("Database error:")
-        print(error)
-
-        return jsonify({
-            "status": "error",
-            "message": "Could not connect to PostgreSQL",
-        }), 500
+    }), 200
 
 
 # -------------------------
@@ -138,31 +179,40 @@ def contact():
         silent=True
     )
 
-    if not data:
+
+    if not isinstance(data, dict):
         return jsonify({
             "status": "error",
-            "message": "No form data was provided.",
+            "message": "Invalid form data.",
         }), 400
 
 
-    name = data.get(
-        "name",
-        "",
+    name = str(
+        data.get(
+            "name",
+            "",
+        )
     ).strip()
 
-    email = data.get(
-        "email",
-        "",
+
+    email = str(
+        data.get(
+            "email",
+            "",
+        )
     ).strip()
 
-    message = data.get(
-        "message",
-        "",
+
+    message = str(
+        data.get(
+            "message",
+            "",
+        )
     ).strip()
 
 
     # -------------------------
-    # VALIDATION
+    # REQUIRED FIELD VALIDATION
     # -------------------------
 
     if not name:
@@ -179,17 +229,54 @@ def contact():
         }), 400
 
 
-    if "@" not in email:
-        return jsonify({
-            "status": "error",
-            "message": "Please provide a valid email address.",
-        }), 400
-
-
     if not message:
         return jsonify({
             "status": "error",
             "message": "Message is required.",
+        }), 400
+
+
+    # -------------------------
+    # LENGTH VALIDATION
+    # -------------------------
+
+    if len(name) > 120:
+        return jsonify({
+            "status": "error",
+            "message": "Name is too long.",
+        }), 400
+
+
+    if len(email) > 255:
+        return jsonify({
+            "status": "error",
+            "message": "Email is too long.",
+        }), 400
+
+
+    if len(message) > 5000:
+        return jsonify({
+            "status": "error",
+            "message": "Message is too long.",
+        }), 400
+
+
+    # -------------------------
+    # EMAIL VALIDATION
+    # -------------------------
+
+    try:
+        validated_email = validate_email(
+            email,
+            check_deliverability=False,
+        )
+
+        email = validated_email.normalized
+
+    except EmailNotValidError:
+        return jsonify({
+            "status": "error",
+            "message": "Please provide a valid email address.",
         }), 400
 
 
@@ -214,16 +301,87 @@ def contact():
     except Exception as error:
         db.session.rollback()
 
-        print(
-            "Error saving contact message:"
+        app.logger.exception(
+            "Error saving contact message: %s",
+            error,
         )
-
-        print(error)
 
         return jsonify({
             "status": "error",
-            "message": "Your message could not be saved. Please try again.",
+            "message": (
+                "Your message could not be saved. "
+                "Please try again."
+            ),
         }), 500
+
+
+    # -------------------------
+    # PREPARE SAFE EMAIL CONTENT
+    # -------------------------
+
+    safe_name = escape(
+        name
+    )
+
+    safe_email = escape(
+        email
+    )
+
+    safe_message = escape(
+        message
+    ).replace(
+        "\n",
+        "<br>",
+    )
+
+
+    # -------------------------
+    # EMAIL NOTIFICATION
+    # -------------------------
+
+    try:
+        resend.Emails.send({
+            "from": resend_from_email,
+
+            "to": [
+                contact_receiver_email,
+            ],
+
+            "reply_to": email,
+
+            "subject": "New portfolio message",
+
+            "html": f"""
+                <h2>New Portfolio Message</h2>
+
+                <p>
+                    <strong>Name:</strong>
+                    {safe_name}
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    {safe_email}
+                </p>
+
+                <p>
+                    <strong>Message:</strong>
+                </p>
+
+                <p>
+                    {safe_message}
+                </p>
+            """,
+        })
+
+    except Exception as error:
+        # The database already has the message,
+        # so email failure should not delete it.
+        app.logger.exception(
+            "Contact message saved, "
+            "but email notification failed: %s",
+            error,
+        )
 
 
     # -------------------------
@@ -232,7 +390,7 @@ def contact():
 
     return jsonify({
         "status": "success",
-        "message": "Your message was saved successfully!",
+        "message": "Your message was received successfully!",
     }), 201
 
 
@@ -242,6 +400,18 @@ def contact():
 
 if __name__ == "__main__":
     app.run(
-        debug=True,
-        port=5000,
+        port=int(
+            os.getenv(
+                "PORT",
+                "5000",
+            )
+        ),
+
+        debug=(
+            os.getenv(
+                "FLASK_DEBUG",
+                "0",
+            )
+            == "1"
+        ),
     )
