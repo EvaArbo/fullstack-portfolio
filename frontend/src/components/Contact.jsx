@@ -2,6 +2,12 @@ import "./Contact.css"
 import { useState } from "react"
 import Reveal from "./Reveal.jsx"
 
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000"
+
+
 function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -32,27 +38,14 @@ function Contact() {
     setIsSubmitting(true)
     setStatus("")
 
-    /*
-      This timer guarantees that the
-      "Sending..." state stays visible
-      for at least 700 milliseconds.
-    */
     const minimumSendingTime = new Promise((resolve) => {
       setTimeout(resolve, 700)
     })
 
     try {
-      /*
-        Both operations start together:
-
-        1. The real request to Flask
-        2. The 700ms minimum timer
-
-        Promise.all waits until both finish.
-      */
       const [response] = await Promise.all([
         fetch(
-          "http://localhost:5000/api/contact",
+          `${API_URL}/api/contact`,
           {
             method: "POST",
 
@@ -70,7 +63,11 @@ function Contact() {
       const data = await response.json()
 
       if (!response.ok) {
-        setStatus(data.message)
+        setStatus(
+          data.message ||
+          "Something went wrong. Please try again.",
+        )
+
         return
       }
 
@@ -82,11 +79,6 @@ function Contact() {
         message: "",
       })
     } catch (error) {
-      /*
-        If Flask fails immediately,
-        still wait for the minimum timer
-        before changing the UI.
-      */
       await minimumSendingTime
 
       console.error(
@@ -115,6 +107,7 @@ function Contact() {
           duration={1100}
         >
           <div className="contact-info">
+
             <p className="contact-label">
               Let's connect
             </p>
@@ -129,6 +122,7 @@ function Contact() {
             </p>
 
             <div className="contact-note">
+
               <p className="contact-note-title">
                 Private by design
               </p>
@@ -138,7 +132,9 @@ function Contact() {
                 so my receiving contact information does not
                 need to be displayed publicly.
               </p>
+
             </div>
+
           </div>
         </Reveal>
 
@@ -157,6 +153,7 @@ function Contact() {
             >
 
               <div className="form-group">
+
                 <label htmlFor="name">
                   Name
                 </label>
@@ -170,10 +167,12 @@ function Contact() {
                   onChange={handleChange}
                   required
                 />
+
               </div>
 
 
               <div className="form-group">
+
                 <label htmlFor="email">
                   Email
                 </label>
@@ -187,10 +186,12 @@ function Contact() {
                   onChange={handleChange}
                   required
                 />
+
               </div>
 
 
               <div className="form-group">
+
                 <label htmlFor="message">
                   Message
                 </label>
@@ -203,6 +204,7 @@ function Contact() {
                   onChange={handleChange}
                   required
                 ></textarea>
+
               </div>
 
 
@@ -235,5 +237,6 @@ function Contact() {
     </section>
   )
 }
+
 
 export default Contact
