@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 from email_validator import EmailNotValidError, validate_email
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_limiter import Limiter
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
 
 
 load_dotenv()
@@ -60,10 +60,11 @@ if not contact_receiver_email:
 
 resend.api_key = resend_api_key
 
+
 app = Flask(__name__)
 
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
@@ -77,6 +78,28 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
+
+# X-Forwarded-For contains the original visitor IP.
+
+def get_client_ip():
+    forwarded_for = request.headers.get(
+        "X-Forwarded-For"
+    )
+
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
+
+    return request.remote_addr or "unknown"
+
+
+# Flask-Limiter keeps track of how many requests
+# each visitor sends.
+
+limiter = Limiter(
+    key_func=get_client_ip,
+    app=app,
+    storage_uri="memory://",
+)
 
 
 allowed_origins = [
@@ -94,7 +117,6 @@ CORS(
     app,
     origins=allowed_origins,
 )
-
 
 
 class ContactMessage(db.Model):
@@ -127,7 +149,6 @@ class ContactMessage(db.Model):
     )
 
 
-
 @app.get("/api/health")
 def health():
     return jsonify({
@@ -136,8 +157,26 @@ def health():
     }), 200
 
 
+# Flask-Limiter normally returns its own 429 response.
+#
+# Our React frontend expects JSON, so we return
+# a JSON response instead.
+@app.errorhandler(429)
+def rate_limit_exceeded(error):
+    return jsonify({
+        "status": "error",
+        "message": (
+            "Too many messages were sent. "
+            "Please wait a little while and try again."
+        ),
+    }), 429
+
 
 @app.post("/api/contact")
+@limiter.limit(
+    "5 per minute; 20 per hour",
+    methods=["POST"],
+)
 def contact():
     data = request.get_json(
         silent=True
@@ -175,8 +214,6 @@ def contact():
     ).strip()
 
 
-   
-
     if not name:
         return jsonify({
             "status": "error",
@@ -197,8 +234,6 @@ def contact():
             "message": "Message is required.",
         }), 400
 
-
-   
 
     if len(name) > 120:
         return jsonify({
@@ -221,7 +256,6 @@ def contact():
         }), 400
 
 
-
     try:
         validated_email = validate_email(
             email,
@@ -233,11 +267,13 @@ def contact():
     except EmailNotValidError:
         return jsonify({
             "status": "error",
-            "message": "Please provide a valid email address.",
+            "message": (
+                "Please provide a valid "
+                "email address."
+            ),
         }), 400
 
 
-   
     new_message = ContactMessage(
         name=name,
         email=email,
@@ -269,7 +305,6 @@ def contact():
         }), 500
 
 
-   
     safe_name = escape(
         name
     )
@@ -285,8 +320,6 @@ def contact():
         "<br>",
     )
 
-
-    
 
     try:
         resend.Emails.send({
@@ -331,13 +364,12 @@ def contact():
         )
 
 
-
     return jsonify({
         "status": "success",
-        "message": "Your message was received successfully!",
+        "message": (
+            "Your message was received successfully!"
+        ),
     }), 201
-
-
 
 
 if __name__ == "__main__":

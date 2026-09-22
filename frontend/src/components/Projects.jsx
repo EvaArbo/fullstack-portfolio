@@ -16,8 +16,8 @@ const projects = [
     image: portfolioImage,
     links: {
       frontend: "https://github.com/EvaArbo/fullstack-portfolio",
-      backend: null,
-      live: null,
+      backend: "https://github.com/EvaArbo/fullstack-portfolio/tree/main/backend",
+      live: "https://portfolio-frontend-sage-delta.vercel.app/",
     },
   },
 
