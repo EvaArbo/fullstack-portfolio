@@ -1,8 +1,26 @@
 .projects {
   padding: 7rem 2rem;
 
-  background-color: var(--background);
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(217, 133, 159, 0.11),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(233, 162, 143, 0.1),
+      transparent 28%
+    ),
+    var(--background);
 }
+
+
+/* MAIN CONTAINER */
 
 .projects-content {
   max-width: 1200px;
@@ -10,11 +28,17 @@
   margin: 0 auto;
 }
 
-.projects-header {
-  text-align: center;
 
-  margin-bottom: 4rem;
+/* HEADER */
+
+.projects-header {
+  max-width: 720px;
+
+  margin: 0 auto 4.5rem;
+
+  text-align: center;
 }
+
 
 .projects-label {
   margin-bottom: 0.6rem;
@@ -25,49 +49,104 @@
   font-weight: 700;
 
   text-transform: uppercase;
+
   letter-spacing: 0.18rem;
 }
 
+
 .projects-title {
+  margin-bottom: 1.25rem;
+
   color: var(--text-primary);
 
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size:
+    clamp(2.6rem, 5vw, 3.8rem);
+
+  line-height: 1.1;
 }
+
+
+.projects-intro {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 1.05rem;
+
+  line-height: 1.8;
+}
+
+
+/* PROJECT GRID */
 
 .projects-grid {
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
 
   gap: 2rem;
+
+  align-items: stretch;
 }
 
+
 /*
-  Reveal wraps every ProjectCard.
+  Reveal wraps every card.
 
-  height: 100% keeps the cards aligned.
+  Height keeps the cards aligned.
 
-  perspective gives the child card actual
-  visual depth when rotateX / rotateY are used.
+  Perspective allows the card's
+  rotateX and rotateY transforms
+  to create real visual depth.
 */
+
 .projects-grid > .reveal {
   height: 100%;
 
-  perspective: 900px;
+  perspective: 1100px;
 }
 
-@media (max-width: 1000px) {
+
+/* TABLET */
+
+@media (max-width: 1050px) {
   .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 650px) {
+
+/* SMALL TABLET */
+
+@media (max-width: 760px) {
   .projects {
-    padding: 5rem 1.5rem;
+    padding: 5.5rem 1.5rem;
+  }
+
+  .projects-header {
+    margin-bottom: 3rem;
   }
 
   .projects-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* PHONE */
+
+@media (max-width: 480px) {
+  .projects {
+    padding: 5rem 1rem;
+  }
+
+  .projects-title {
+    font-size: 2.5rem;
+  }
+
+  .projects-intro {
+    font-size: 1rem;
   }
 }

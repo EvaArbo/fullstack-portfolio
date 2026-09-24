@@ -16,43 +16,125 @@
 
   --border: #ead8df;
 
-  --shadow-small: 0 8px 25px rgba(36, 22, 46, 0.06);
-  --shadow-medium: 0 18px 45px rgba(36, 22, 46, 0.1);
+  --shadow-small:
+    0 8px 25px
+    rgba(36, 22, 46, 0.06);
+
+  --shadow-medium:
+    0 18px 45px
+    rgba(36, 22, 46, 0.1);
 }
 
-* {
+
+
+
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+
 html {
   scroll-behavior: smooth;
 }
 
+
 body {
   min-width: 320px;
 
-  background-color: var(--background);
-  color: var(--text-primary);
+  background-color:
+    var(--background);
+
+  color:
+    var(--text-primary);
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
+
+  line-height: 1.5;
 }
+
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
+
+
+button,
+a {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
 
 a {
   color: inherit;
 }
 
+
+
+
 ::selection {
-  background-color: var(--accent);
-  color: white;
+  background-color:
+    var(--accent);
+
+  color:
+    #ffffff;
+}
+
+
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline:
+    3px solid
+    var(--primary);
+
+  outline-offset:
+    4px;
+}
+
+
+#home,
+#about,
+#resume,
+#projects,
+#contact {
+  scroll-margin-top:
+    100px;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior:
+      auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+
+    scroll-behavior:
+      auto !important;
+  }
 }

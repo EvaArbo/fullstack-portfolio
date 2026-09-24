@@ -15,6 +15,9 @@ function LiveAboutCard({
     y: 0,
   })
 
+  const titleId =
+    `about-card-${index}-title`
+
 
   useEffect(() => {
     const card = cardRef.current
@@ -24,21 +27,31 @@ function LiveAboutCard({
     }
 
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches
+    const shouldReduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce), (hover: none), (pointer: coarse)",
+      ).matches
 
-    if (prefersReducedMotion) {
+
+    if (shouldReduceMotion) {
       return
     }
 
 
     function handlePointerMove(event) {
       const x =
-        (event.clientX / window.innerWidth - 0.5) * 2
+        (
+          event.clientX /
+          window.innerWidth -
+          0.5
+        ) * 2
 
       const y =
-        (event.clientY / window.innerHeight - 0.5) * 2
+        (
+          event.clientY /
+          window.innerHeight -
+          0.5
+        ) * 2
 
 
       pointerRef.current = {
@@ -58,50 +71,59 @@ function LiveAboutCard({
 
 
     function animate(time) {
-      const seconds = time / 1000
+      const seconds =
+        time / 1000
 
-      const phase = index * 1.6
+      const phase =
+        index * 1.6
 
-
-      /*
-        Very small automatic movement.
-
-        These values are intentionally much
-        smaller than the ProjectCard values.
-      */
 
       const floatY =
-        Math.sin(seconds * 0.8 + phase) * 4
+        Math.sin(
+          seconds * 0.8 +
+          phase,
+        ) * 4
+
 
       const floatX =
-        Math.cos(seconds * 0.65 + phase) * 2
+        Math.cos(
+          seconds * 0.65 +
+          phase,
+        ) * 2
 
 
       const ambientRotateX =
-        Math.sin(seconds * 0.55 + phase) * 1.2
+        Math.sin(
+          seconds * 0.55 +
+          phase,
+        ) * 1.2
+
 
       const ambientRotateY =
-        Math.cos(seconds * 0.6 + phase) * 1.5
+        Math.cos(
+          seconds * 0.6 +
+          phase,
+        ) * 1.5
 
-
-      /*
-        Pointer response.
-
-        Also intentionally subtle.
-      */
 
       const pointerRotateX =
-        pointerRef.current.y * -1.5
+        pointerRef.current.y *
+        -1.5
+
 
       const pointerRotateY =
-        pointerRef.current.x * 2
+        pointerRef.current.x *
+        2
 
 
       const rotateX =
-        ambientRotateX + pointerRotateX
+        ambientRotateX +
+        pointerRotateX
+
 
       const rotateY =
-        ambientRotateY + pointerRotateY
+        ambientRotateY +
+        pointerRotateY
 
 
       card.style.setProperty(
@@ -109,15 +131,18 @@ function LiveAboutCard({
         `${floatX}px`,
       )
 
+
       card.style.setProperty(
         "--about-float-y",
         `${floatY}px`,
       )
 
+
       card.style.setProperty(
         "--about-rotate-x",
         `${rotateX}deg`,
       )
+
 
       card.style.setProperty(
         "--about-rotate-y",
@@ -126,12 +151,16 @@ function LiveAboutCard({
 
 
       animationFrame =
-        requestAnimationFrame(animate)
+        requestAnimationFrame(
+          animate,
+        )
     }
 
 
     animationFrame =
-      requestAnimationFrame(animate)
+      requestAnimationFrame(
+        animate,
+      )
 
 
     return () => {
@@ -140,20 +169,28 @@ function LiveAboutCard({
         handlePointerMove,
       )
 
-      cancelAnimationFrame(animationFrame)
+
+      cancelAnimationFrame(
+        animationFrame,
+      )
     }
   }, [index])
 
 
   return (
-    <div
+    <article
       ref={cardRef}
       className="about-card"
+      aria-labelledby={titleId}
     >
-      <h3>{title}</h3>
+      <h3 id={titleId}>
+        {title}
+      </h3>
 
-      <p>{description}</p>
-    </div>
+      <p>
+        {description}
+      </p>
+    </article>
   )
 }
 
@@ -163,6 +200,7 @@ function About() {
     <section
       id="about"
       className="about"
+      aria-labelledby="about-title"
     >
       <div className="about-content">
 
@@ -172,13 +210,18 @@ function About() {
           duration={1000}
         >
           <div className="about-header">
+
             <p className="about-label">
               Get to know me
             </p>
 
-            <h2 className="about-title">
+            <h2
+              id="about-title"
+              className="about-title"
+            >
               About Me
             </h2>
+
           </div>
         </Reveal>
 
@@ -191,25 +234,32 @@ function About() {
             duration={1100}
           >
             <div className="about-text">
+
               <p className="about-description">
-                I’m a full-stack and mobile developer who enjoys turning ideas
-                into practical, user-friendly applications. I work with React
-                and JavaScript on the web, React Native for mobile applications,
-                and Python and Flask on the backend.
+                I’m a full-stack and mobile developer who enjoys
+                turning ideas into practical, user-friendly
+                applications. I work with React and JavaScript on
+                the web, React Native for mobile applications, and
+                Python and Flask on the backend.
               </p>
 
               <p className="about-description">
-                I enjoy understanding how each part of an application works,
-                from the interface users interact with to the APIs and databases
-                working behind the scenes. I’m continuously improving my skills
-                by building real projects and learning through hands-on
-                development.
+                I enjoy understanding how each part of an
+                application works, from the interface users interact
+                with to the APIs and databases working behind the
+                scenes. I’m continuously improving my skills by
+                building real projects and learning through
+                hands-on development.
               </p>
+
             </div>
           </Reveal>
 
 
-          <div className="about-highlights">
+          <div
+            className="about-highlights"
+            aria-label="Development areas"
+          >
 
             <Reveal
               direction="right"
@@ -259,7 +309,9 @@ function About() {
             </Reveal>
 
           </div>
+
         </div>
+
       </div>
     </section>
   )

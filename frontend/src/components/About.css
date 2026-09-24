@@ -1,6 +1,8 @@
 .about {
   padding: 7rem 2rem;
 
+  overflow: hidden;
+
   background:
     radial-gradient(
       circle at 10% 80%,
@@ -8,8 +10,6 @@
       transparent 30%
     ),
     var(--soft-pink);
-
-  overflow: hidden;
 }
 
 
@@ -21,9 +21,9 @@
 
 
 .about-header {
-  text-align: center;
-
   margin-bottom: 4rem;
+
+  text-align: center;
 }
 
 
@@ -44,20 +44,22 @@
 .about-title {
   color: var(--text-primary);
 
-  font-size: clamp(
-    2.5rem,
-    5vw,
-    3.5rem
-  );
+  font-size:
+    clamp(
+      2.5rem,
+      5vw,
+      3.5rem
+    );
+
+  line-height: 1.1;
 }
 
-
-/* MAIN ABOUT LAYOUT */
 
 .about-grid {
   display: grid;
 
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns:
+    1.1fr 1fr;
 
   gap: 5rem;
 
@@ -65,9 +67,9 @@
 }
 
 
-/* TEXT */
-
 .about-text {
+  min-width: 0;
+
   text-align: left;
 }
 
@@ -78,37 +80,37 @@
   color: var(--text-secondary);
 
   font-size: 1.08rem;
+
   line-height: 1.9;
 }
 
 
-/* LIVE CARDS GRID */
+.about-description:last-child {
+  margin-bottom: 0;
+}
+
 
 .about-highlights {
   display: grid;
 
   grid-template-columns:
-    repeat(2, 1fr);
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
   gap: 1.2rem;
 }
 
 
-/*
-  Reveal wraps each About card.
-
-  Perspective belongs on the parent
-  so rotateX and rotateY show depth.
-*/
-
 .about-highlights > .reveal {
+  min-width: 0;
+
   height: 100%;
 
   perspective: 1100px;
 }
 
-
-/* LIVE ABOUT CARD */
 
 .about-card {
   height: 100%;
@@ -130,7 +132,6 @@
 
   text-align: left;
 
-
   transform:
     translateX(
       var(--about-float-x, 0px)
@@ -145,19 +146,17 @@
       var(--about-rotate-y, 0deg)
     );
 
+  transform-style:
+    preserve-3d;
 
-  transform-style: preserve-3d;
-
-  will-change: transform;
-
+  will-change:
+    transform;
 
   transition:
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
 
-
-/* HOVER DOES NOT CONTROL TRANSFORM */
 
 .about-card:hover {
   border-color:
@@ -168,8 +167,6 @@
 }
 
 
-/* CARD TITLE */
-
 .about-card h3 {
   margin-bottom: 0.7rem;
 
@@ -177,28 +174,29 @@
 
   font-size: 1.1rem;
 
+  line-height: 1.4;
+
   transform:
     translateZ(18px);
 }
 
 
-/* CARD DESCRIPTION */
-
 .about-card p {
+  margin: 0;
+
   color: var(--text-secondary);
 
-  line-height: 1.6;
+  line-height: 1.7;
 
   transform:
     translateZ(10px);
 }
 
 
-/* TABLET */
-
 @media (max-width: 900px) {
   .about-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
 
     gap: 3rem;
   }
@@ -214,16 +212,21 @@
 }
 
 
-/* PHONE */
-
 @media (max-width: 600px) {
   .about {
-    padding: 5rem 1.5rem;
+    padding:
+      5rem 1.5rem;
+  }
+
+
+  .about-header {
+    margin-bottom: 3rem;
   }
 
 
   .about-highlights {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
 
@@ -233,13 +236,40 @@
 }
 
 
-/* ACCESSIBILITY */
+@media (hover: none), (pointer: coarse) {
+  .about-highlights > .reveal {
+    perspective: none;
+  }
 
-@media (
-  prefers-reduced-motion: reduce
-) {
+
   .about-card {
     transform: none;
+
+    transform-style: flat;
+
+    will-change: auto;
+  }
+
+
+  .about-card h3,
+  .about-card p {
+    transform: none;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .about-highlights > .reveal {
+    perspective: none;
+  }
+
+
+  .about-card {
+    transform: none;
+
+    transform-style: flat;
+
+    will-change: auto;
 
     transition: none;
   }

@@ -1,8 +1,6 @@
 .contact {
   padding: 7rem 2rem;
-
   position: relative;
-
   overflow: hidden;
 
   background:
@@ -15,40 +13,27 @@
 }
 
 
-/* MAIN LAYOUT */
-
 .contact-content {
   max-width: 1100px;
-
   margin: 0 auto;
 
   display: grid;
-
   grid-template-columns: 1fr 1.1fr;
-
   gap: 5rem;
 
   align-items: center;
 }
 
 
-/*
-  Reveal adds a wrapper around both columns.
-
-  This makes each Reveal wrapper fill
-  its side of the grid correctly.
-*/
-
 .contact-content > .reveal {
   width: 100%;
 }
 
 
-/* LEFT SIDE */
-
 .contact-info {
-  max-width: 480px;
+  max-width: 500px;
 }
+
 
 .contact-label {
   margin-bottom: 0.7rem;
@@ -59,9 +44,9 @@
   font-weight: 700;
 
   text-transform: uppercase;
-
   letter-spacing: 0.18rem;
 }
+
 
 .contact-title {
   margin-bottom: 1.5rem;
@@ -74,66 +59,216 @@
   line-height: 1.1;
 }
 
+
 .contact-description {
   margin-bottom: 2rem;
 
   color: var(--text-secondary);
 
   font-size: 1.1rem;
-
   line-height: 1.8;
 }
 
 
-/* PRIVACY NOTE */
+.contact-links {
+  display: grid;
 
-.contact-note {
-  padding: 1.5rem;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+
+.contact-link {
+  min-height: 92px;
+
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  gap: 0.9rem;
 
   position: relative;
+  overflow: hidden;
+
+  color: var(--text-primary);
 
   background-color:
-    rgba(255, 255, 255, 0.65);
+    rgba(255, 255, 255, 0.7);
 
   border:
     1px solid var(--border);
 
-  border-radius: 14px;
+  border-radius: 16px;
 
-  color: var(--text-secondary);
-
-  line-height: 1.7;
+  text-decoration: none;
 
   box-shadow:
     var(--shadow-small);
 
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
-.contact-note:hover {
+
+.contact-link::before {
+  content: "";
+
+  position: absolute;
+
+  width: 80px;
+  height: 80px;
+
+  top: -45px;
+  right: -45px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(217, 133, 159, 0.18);
+
+  transition:
+    transform 0.4s ease;
+}
+
+
+a.contact-link:hover {
   transform:
-    translateY(-4px);
+    translateY(-5px);
 
   border-color:
-    rgba(139, 47, 104, 0.25);
+    rgba(139, 47, 104, 0.28);
+
+  background-color:
+    rgba(255, 255, 255, 0.92);
 
   box-shadow:
     var(--shadow-medium);
 }
 
-.contact-note-title {
-  margin-bottom: 0.5rem;
 
-  color: var(--primary);
+a.contact-link:hover::before {
+  transform:
+    scale(1.8);
+}
 
+
+a.contact-link:focus-visible {
+  border-color:
+    var(--primary);
+
+  background-color:
+    rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    var(--shadow-medium);
+}
+
+
+.contact-link-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  z-index: 1;
+
+  color:
+    var(--primary);
+
+  background-color:
+    var(--soft-purple);
+
+  border:
+    1px solid
+    rgba(139, 47, 104, 0.12);
+
+  border-radius: 13px;
+
+  font-size: 1.35rem;
+
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.contact-link-icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+
+a.contact-link:hover
+.contact-link-icon,
+a.contact-link:focus-visible
+.contact-link-icon {
+  color: #ffffff;
+
+  background-color:
+    var(--primary);
+
+  transform:
+    scale(1.06);
+}
+
+
+.contact-link-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.2rem;
+
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.contact-link-text strong {
+  color:
+    var(--text-primary);
+
+  font-size: 0.96rem;
   font-weight: 700;
 }
 
 
-/* FORM CARD */
+.contact-link-text small {
+  color:
+    var(--text-secondary);
+
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+
+.contact-location {
+  grid-column: 1 / -1;
+
+  cursor: default;
+}
+
+
+.contact-location::before {
+  background:
+    rgba(233, 162, 143, 0.16);
+}
+
 
 .contact-form-container {
   padding: 2.5rem;
@@ -159,11 +294,6 @@
 }
 
 
-/*
-  The whole form card reacts when
-  any input or textarea receives focus.
-*/
-
 .contact-form-container:focus-within {
   transform:
     translateY(-5px);
@@ -177,29 +307,27 @@
 }
 
 
-/* FORM */
-
 .contact-form {
   display: flex;
-
   flex-direction: column;
 
   gap: 1.5rem;
+
+  scroll-margin-top: 110px;
 }
 
 
-/* FORM GROUP */
-
 .form-group {
   display: flex;
-
   flex-direction: column;
 
   gap: 0.6rem;
 }
 
+
 .form-group label {
-  color: var(--text-primary);
+  color:
+    var(--text-primary);
 
   font-weight: 600;
 
@@ -209,20 +337,14 @@
 }
 
 
-/*
-  Label responds when its input
-  or textarea is currently focused.
-*/
-
 .form-group:focus-within label {
-  color: var(--primary);
+  color:
+    var(--primary);
 
   transform:
     translateX(4px);
 }
 
-
-/* INPUTS */
 
 .form-group input,
 .form-group textarea {
@@ -250,21 +372,23 @@
     background-color 0.3s ease;
 }
 
+
+.form-group input {
+  min-height: 48px;
+}
+
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color:
     var(--text-secondary);
 
-  opacity: 0.65;
+  opacity: 0.85;
 }
 
 
-/* ACTIVE FIELD */
-
 .form-group input:focus,
 .form-group textarea:focus {
-  outline: none;
-
   border-color:
     var(--primary);
 
@@ -280,16 +404,12 @@
 }
 
 
-/* VALID FIELD */
-
 .form-group input:not(:placeholder-shown):valid,
 .form-group textarea:not(:placeholder-shown):valid {
   border-color:
     rgba(139, 47, 104, 0.45);
 }
 
-
-/* MESSAGE */
 
 .form-group textarea {
   min-height: 170px;
@@ -298,28 +418,25 @@
 }
 
 
-/* BUTTON */
-
 .contact-button {
   align-self: flex-start;
 
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
   min-width: 150px;
+  min-height: 48px;
 
   padding: 0.9rem 1.7rem;
 
   position: relative;
-
   overflow: hidden;
 
   background-color:
     var(--primary);
 
-  color: white;
+  color: #ffffff;
 
   border:
     2px solid var(--primary);
@@ -342,8 +459,6 @@
     opacity 0.3s ease;
 }
 
-
-/* BUTTON SHINE */
 
 .contact-button::before {
   content: "";
@@ -371,9 +486,11 @@
     left 0.55s ease;
 }
 
+
 .contact-button:hover::before {
   left: 150%;
 }
+
 
 .contact-button:hover {
   background-color:
@@ -389,14 +506,13 @@
     var(--shadow-medium);
 }
 
+
 .contact-button:active {
   transform:
     translateY(-1px)
     scale(0.98);
 }
 
-
-/* SENDING / DISABLED BUTTON */
 
 .contact-button:disabled {
   opacity: 0.7;
@@ -415,6 +531,7 @@
     var(--shadow-small);
 }
 
+
 .contact-button:disabled:hover {
   background-color:
     var(--primary);
@@ -428,12 +545,11 @@
     var(--shadow-small);
 }
 
+
 .contact-button:disabled::before {
   display: none;
 }
 
-
-/* STATUS MESSAGE */
 
 .contact-status {
   margin-top: 1.5rem;
@@ -455,11 +571,14 @@
 
   font-weight: 600;
 
+  line-height: 1.5;
+
   animation:
     contact-status-enter
     0.5s
     cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 
 @keyframes contact-status-enter {
   from {
@@ -480,26 +599,36 @@
 }
 
 
-/* TABLET */
-
 @media (max-width: 850px) {
   .contact-content {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
 
     gap: 3rem;
   }
+
 
   .contact-info {
     max-width: 650px;
 
     margin: 0 auto;
+  }
 
+
+  .contact-label,
+  .contact-title,
+  .contact-description {
     text-align: center;
+  }
+
+
+  .contact-links {
+    max-width: 600px;
+
+    margin: 0 auto;
   }
 }
 
-
-/* PHONE */
 
 @media (max-width: 600px) {
   .contact {
@@ -507,9 +636,22 @@
       5rem 1.5rem;
   }
 
+
+  .contact-links {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .contact-location {
+    grid-column: auto;
+  }
+
+
   .contact-form-container {
     padding: 1.5rem;
   }
+
 
   .contact-button {
     width: 100%;
@@ -517,10 +659,29 @@
 }
 
 
-/* ACCESSIBILITY */
+@media (max-width: 380px) {
+  .contact {
+    padding:
+      4.5rem 1rem;
+  }
+
+
+  .contact-link {
+    padding: 0.9rem;
+  }
+
+
+  .contact-link-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-note,
+  .contact-link,
+  .contact-link::before,
+  .contact-link-icon,
   .contact-form-container,
   .form-group label,
   .form-group input,
@@ -533,7 +694,13 @@
     animation: none;
   }
 
-  .contact-note:hover,
+
+  a.contact-link:hover,
+  a.contact-link:focus-visible,
+  a.contact-link:hover
+  .contact-link-icon,
+  a.contact-link:focus-visible
+  .contact-link-icon,
   .contact-form-container:focus-within,
   .form-group input:focus,
   .form-group textarea:focus,
