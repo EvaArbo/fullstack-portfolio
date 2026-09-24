@@ -24,19 +24,18 @@ function Contact() {
   })
 
   const [status, setStatus] = useState("")
-
   const [isSubmitting, setIsSubmitting] = useState(false)
 
 
   function handleChange(event) {
     const { name, value } = event.target
 
-    setFormData({
-      ...formData,
+    setFormData((previousData) => ({
+      ...previousData,
       [name]: value,
-    })
+    }))
 
-    if (status) {
+    if (status && !isSubmitting) {
       setStatus("")
     }
   }
@@ -45,32 +44,45 @@ function Contact() {
   async function handleSubmit(event) {
     event.preventDefault()
 
+    if (isSubmitting) {
+      return
+    }
+
     setIsSubmitting(true)
     setStatus("")
 
-    const minimumSendingTime = new Promise((resolve) => {
-      setTimeout(resolve, 700)
-    })
+    let slowMessageTimer
 
     try {
-      const [response] = await Promise.all([
-        fetch(
-          `${API_URL}/api/contact`,
-          {
-            method: "POST",
+      slowMessageTimer = window.setTimeout(() => {
+        setStatus(
+          "Still sending your message. This may take a few seconds.",
+        )
+      }, 5000)
 
-            headers: {
-              "Content-Type": "application/json",
-            },
+      const response = await fetch(
+        `${API_URL}/api/contact`,
+        {
+          method: "POST",
 
-            body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
           },
-        ),
 
-        minimumSendingTime,
-      ])
+          body: JSON.stringify(formData),
+        },
+      )
 
-      const data = await response.json()
+      window.clearTimeout(slowMessageTimer)
+
+      let data = {}
+
+      try {
+        data = await response.json()
+      } catch {
+        data = {}
+      }
+
 
       if (!response.ok) {
         setStatus(
@@ -81,7 +93,12 @@ function Contact() {
         return
       }
 
-      setStatus(data.message)
+
+      setStatus(
+        data.message ||
+        "Your message was sent successfully.",
+      )
+
 
       setFormData({
         name: "",
@@ -89,7 +106,7 @@ function Contact() {
         message: "",
       })
     } catch (error) {
-      await minimumSendingTime
+      window.clearTimeout(slowMessageTimer)
 
       console.error(
         "Contact form error:",
@@ -100,6 +117,8 @@ function Contact() {
         "Could not connect to the server. Please try again.",
       )
     } finally {
+      window.clearTimeout(slowMessageTimer)
+
       setIsSubmitting(false)
     }
   }
@@ -124,12 +143,14 @@ function Contact() {
               Let&apos;s connect
             </p>
 
+
             <h2
               id="contact-title"
               className="contact-title"
             >
               Contact Me
             </h2>
+
 
             <p className="contact-description">
               Have a project, opportunity, or idea you&apos;d like
@@ -155,8 +176,13 @@ function Contact() {
                 </span>
 
                 <span className="contact-link-text">
-                  <strong>GitHub</strong>
-                  <small>View my projects</small>
+                  <strong>
+                    GitHub
+                  </strong>
+
+                  <small>
+                    View my projects
+                  </small>
                 </span>
               </a>
 
@@ -173,8 +199,13 @@ function Contact() {
                 </span>
 
                 <span className="contact-link-text">
-                  <strong>LinkedIn</strong>
-                  <small>Connect professionally</small>
+                  <strong>
+                    LinkedIn
+                  </strong>
+
+                  <small>
+                    Connect professionally
+                  </small>
                 </span>
               </a>
 
@@ -190,8 +221,13 @@ function Contact() {
                 </span>
 
                 <span className="contact-link-text">
-                  <strong>Resume</strong>
-                  <small>Download my resume</small>
+                  <strong>
+                    Resume
+                  </strong>
+
+                  <small>
+                    Download my resume
+                  </small>
                 </span>
               </a>
 
@@ -206,22 +242,38 @@ function Contact() {
                 </span>
 
                 <span className="contact-link-text">
-                  <strong>Message</strong>
-                  <small>Send me a message below</small>
+                  <strong>
+                    Message
+                  </strong>
+
+                  <small>
+                    Send me a message below
+                  </small>
                 </span>
               </a>
 
 
-              <div className="contact-link contact-location">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Tacoma%2C+Washington"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link contact-location"
+                aria-label="View Tacoma, Washington on Google Maps"
+              >
                 <span className="contact-link-icon">
                   <FaLocationDot aria-hidden="true" />
                 </span>
 
                 <span className="contact-link-text">
-                  <strong>Location</strong>
-                  <small>Tacoma, Washington</small>
+                  <strong>
+                    Location
+                  </strong>
+
+                  <small>
+                    Tacoma, Washington
+                  </small>
                 </span>
-              </div>
+              </a>
 
             </div>
 
@@ -259,6 +311,7 @@ function Contact() {
                   placeholder="Your name"
                   value={formData.name}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   required
                 />
 
@@ -280,6 +333,7 @@ function Contact() {
                   placeholder="Your email"
                   value={formData.email}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   required
                 />
 
@@ -299,6 +353,7 @@ function Contact() {
                   placeholder="Your message"
                   value={formData.message}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   required
                 ></textarea>
 

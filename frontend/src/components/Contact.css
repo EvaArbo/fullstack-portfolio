@@ -1,6 +1,8 @@
 .contact {
   padding: 7rem 2rem;
+
   position: relative;
+
   overflow: hidden;
 
   background:
@@ -15,10 +17,14 @@
 
 .contact-content {
   max-width: 1100px;
+
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+
+  grid-template-columns:
+    1fr 1.1fr;
+
   gap: 5rem;
 
   align-items: center;
@@ -38,12 +44,15 @@
 .contact-label {
   margin-bottom: 0.7rem;
 
-  color: var(--primary);
+  color:
+    var(--primary);
 
   font-size: 0.9rem;
+
   font-weight: 700;
 
   text-transform: uppercase;
+
   letter-spacing: 0.18rem;
 }
 
@@ -51,10 +60,15 @@
 .contact-title {
   margin-bottom: 1.5rem;
 
-  color: var(--text-primary);
+  color:
+    var(--text-primary);
 
   font-size:
-    clamp(2.8rem, 5vw, 4rem);
+    clamp(
+      2.8rem,
+      5vw,
+      4rem
+    );
 
   line-height: 1.1;
 }
@@ -63,9 +77,11 @@
 .contact-description {
   margin-bottom: 2rem;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 1.1rem;
+
   line-height: 1.8;
 }
 
@@ -74,7 +90,10 @@
   display: grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
   gap: 1rem;
 }
@@ -86,20 +105,29 @@
   padding: 1rem;
 
   display: flex;
+
   align-items: center;
 
   gap: 0.9rem;
 
   position: relative;
+
   overflow: hidden;
 
-  color: var(--text-primary);
+  color:
+    var(--text-primary);
 
   background-color:
-    rgba(255, 255, 255, 0.7);
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
 
   border:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-radius: 16px;
 
@@ -107,6 +135,8 @@
 
   box-shadow:
     var(--shadow-small);
+
+  cursor: pointer;
 
   transition:
     transform 0.3s ease,
@@ -130,43 +160,48 @@
   border-radius: 50%;
 
   background:
-    rgba(217, 133, 159, 0.18);
+    rgba(
+      217,
+      133,
+      159,
+      0.18
+    );
 
   transition:
     transform 0.4s ease;
 }
 
 
-a.contact-link:hover {
+.contact-link:hover,
+.contact-link:focus-visible {
   transform:
     translateY(-5px);
 
   border-color:
-    rgba(139, 47, 104, 0.28);
+    rgba(
+      139,
+      47,
+      104,
+      0.28
+    );
 
   background-color:
-    rgba(255, 255, 255, 0.92);
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
 
   box-shadow:
     var(--shadow-medium);
 }
 
 
-a.contact-link:hover::before {
+.contact-link:hover::before,
+.contact-link:focus-visible::before {
   transform:
     scale(1.8);
-}
-
-
-a.contact-link:focus-visible {
-  border-color:
-    var(--primary);
-
-  background-color:
-    rgba(255, 255, 255, 0.95);
-
-  box-shadow:
-    var(--shadow-medium);
 }
 
 
@@ -177,6 +212,7 @@ a.contact-link:focus-visible {
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -192,7 +228,12 @@ a.contact-link:focus-visible {
 
   border:
     1px solid
-    rgba(139, 47, 104, 0.12);
+    rgba(
+      139,
+      47,
+      104,
+      0.12
+    );
 
   border-radius: 13px;
 
@@ -207,15 +248,17 @@ a.contact-link:focus-visible {
 
 .contact-link-icon svg {
   width: 1.25em;
+
   height: 1.25em;
 }
 
 
-a.contact-link:hover
+.contact-link:hover
 .contact-link-icon,
-a.contact-link:focus-visible
+.contact-link:focus-visible
 .contact-link-icon {
-  color: #ffffff;
+  color:
+    #ffffff;
 
   background-color:
     var(--primary);
@@ -229,6 +272,7 @@ a.contact-link:focus-visible
   min-width: 0;
 
   display: flex;
+
   flex-direction: column;
 
   gap: 0.2rem;
@@ -244,6 +288,7 @@ a.contact-link:focus-visible
     var(--text-primary);
 
   font-size: 0.96rem;
+
   font-weight: 700;
 }
 
@@ -253,20 +298,25 @@ a.contact-link:focus-visible
     var(--text-secondary);
 
   font-size: 0.82rem;
+
   line-height: 1.5;
 }
 
 
 .contact-location {
-  grid-column: 1 / -1;
-
-  cursor: default;
+  grid-column:
+    1 / -1;
 }
 
 
 .contact-location::before {
   background:
-    rgba(233, 162, 143, 0.16);
+    rgba(
+      233,
+      162,
+      143,
+      0.16
+    );
 }
 
 
@@ -276,10 +326,16 @@ a.contact-link:focus-visible
   position: relative;
 
   background-color:
-    rgba(255, 255, 255, 0.85);
+    rgba(
+      255,
+      255,
+      255,
+      0.85
+    );
 
   border:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-radius: 20px;
 
@@ -288,7 +344,12 @@ a.contact-link:focus-visible
 
   transition:
     transform 0.4s
-      cubic-bezier(0.16, 1, 0.3, 1),
+      cubic-bezier(
+        0.16,
+        1,
+        0.3,
+        1
+      ),
     box-shadow 0.4s ease,
     border-color 0.4s ease;
 }
@@ -299,26 +360,39 @@ a.contact-link:focus-visible
     translateY(-5px);
 
   border-color:
-    rgba(139, 47, 104, 0.32);
+    rgba(
+      139,
+      47,
+      104,
+      0.32
+    );
 
   box-shadow:
     0 26px 60px
-    rgba(36, 22, 46, 0.14);
+    rgba(
+      36,
+      22,
+      46,
+      0.14
+    );
 }
 
 
 .contact-form {
   display: flex;
+
   flex-direction: column;
 
   gap: 1.5rem;
 
-  scroll-margin-top: 110px;
+  scroll-margin-top:
+    110px;
 }
 
 
 .form-group {
   display: flex;
+
   flex-direction: column;
 
   gap: 0.6rem;
@@ -350,7 +424,8 @@ a.contact-link:focus-visible
 .form-group textarea {
   width: 100%;
 
-  padding: 0.95rem 1rem;
+  padding:
+    0.95rem 1rem;
 
   background-color:
     var(--surface);
@@ -359,7 +434,8 @@ a.contact-link:focus-visible
     var(--text-primary);
 
   border:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-radius: 10px;
 
@@ -369,7 +445,8 @@ a.contact-link:focus-visible
     border-color 0.3s ease,
     box-shadow 0.3s ease,
     transform 0.3s ease,
-    background-color 0.3s ease;
+    background-color 0.3s ease,
+    opacity 0.3s ease;
 }
 
 
@@ -393,21 +470,45 @@ a.contact-link:focus-visible
     var(--primary);
 
   background-color:
-    rgba(255, 255, 255, 0.98);
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
 
   box-shadow:
     0 0 0 4px
-    rgba(139, 47, 104, 0.1);
+    rgba(
+      139,
+      47,
+      104,
+      0.1
+    );
 
   transform:
     translateY(-2px);
 }
 
 
+.form-group input:disabled,
+.form-group textarea:disabled {
+  opacity: 0.7;
+
+  cursor:
+    not-allowed;
+}
+
+
 .form-group input:not(:placeholder-shown):valid,
 .form-group textarea:not(:placeholder-shown):valid {
   border-color:
-    rgba(139, 47, 104, 0.45);
+    rgba(
+      139,
+      47,
+      104,
+      0.45
+    );
 }
 
 
@@ -421,29 +522,35 @@ a.contact-link:focus-visible
 .contact-button {
   align-self: flex-start;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
   min-width: 150px;
   min-height: 48px;
 
-  padding: 0.9rem 1.7rem;
+  padding:
+    0.9rem 1.7rem;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
 
   position: relative;
+
   overflow: hidden;
 
   background-color:
     var(--primary);
 
-  color: #ffffff;
+  color:
+    #ffffff;
 
   border:
-    2px solid var(--primary);
+    2px solid
+    var(--primary);
 
   border-radius: 10px;
 
   font: inherit;
+
   font-weight: 700;
 
   cursor: pointer;
@@ -475,7 +582,12 @@ a.contact-link:focus-visible
     linear-gradient(
       110deg,
       transparent,
-      rgba(255, 255, 255, 0.25),
+      rgba(
+        255,
+        255,
+        255,
+        0.25
+      ),
       transparent
     );
 
@@ -517,7 +629,8 @@ a.contact-link:focus-visible
 .contact-button:disabled {
   opacity: 0.7;
 
-  cursor: not-allowed;
+  cursor:
+    not-allowed;
 
   background-color:
     var(--primary);
@@ -554,7 +667,8 @@ a.contact-link:focus-visible
 .contact-status {
   margin-top: 1.5rem;
 
-  padding: 0.9rem 1rem;
+  padding:
+    0.9rem 1rem;
 
   color:
     var(--primary);
@@ -563,7 +677,8 @@ a.contact-link:focus-visible
     var(--soft-pink);
 
   border:
-    1px solid var(--border);
+    1px solid
+    var(--border);
 
   border-radius: 10px;
 
@@ -576,7 +691,12 @@ a.contact-link:focus-visible
   animation:
     contact-status-enter
     0.5s
-    cubic-bezier(0.16, 1, 0.3, 1);
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
 }
 
 
@@ -673,6 +793,7 @@ a.contact-link:focus-visible
 
   .contact-link-icon {
     width: 44px;
+
     height: 44px;
   }
 }
@@ -695,11 +816,11 @@ a.contact-link:focus-visible
   }
 
 
-  a.contact-link:hover,
-  a.contact-link:focus-visible,
-  a.contact-link:hover
+  .contact-link:hover,
+  .contact-link:focus-visible,
+  .contact-link:hover
   .contact-link-icon,
-  a.contact-link:focus-visible
+  .contact-link:focus-visible
   .contact-link-icon,
   .contact-form-container:focus-within,
   .form-group input:focus,
