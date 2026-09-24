@@ -151,9 +151,9 @@ function Hero() {
 
 
           <p className="hero-description">
-            I build modern web and mobile experiences
-            that are clean, functional, and made to
-            solve real problems.
+            I turn ideas into practical digital products that
+            are easy to use, reliable, and built with a clear
+            purpose.
           </p>
 
 

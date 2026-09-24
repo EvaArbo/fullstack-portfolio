@@ -236,20 +236,21 @@ function About() {
             <div className="about-text">
 
               <p className="about-description">
-                I’m a full-stack and mobile developer who enjoys
-                turning ideas into practical, user-friendly
-                applications. I work with React and JavaScript on
-                the web, React Native for mobile applications, and
-                Python and Flask on the backend.
+                I’m a software developer who enjoys turning real
+                problems into practical digital solutions. I like
+                taking an idea from its early stages, understanding
+                what people actually need, and shaping it into
+                something useful and easy to navigate.
               </p>
 
               <p className="about-description">
-                I enjoy understanding how each part of an
-                application works, from the interface users interact
-                with to the APIs and databases working behind the
-                scenes. I’m continuously improving my skills by
-                building real projects and learning through
-                hands-on development.
+                What I enjoy most is the problem-solving behind the
+                work. I’m curious, detail-oriented, and always
+               looking for ways to make a product clearer, more
+               reliable, and more useful to the people using it.
+               I continue growing by building real projects,
+                 improving existing work, and learning from every
+                 challenge I take on.
               </p>
 
             </div>
